@@ -10,16 +10,29 @@ def siglas():
     sigla2 = sigla_moeda[indice2]
 
     juncao = sigla + "-" + sigla2
+    global jsimples
+    jsimples = sigla + sigla2
 
     return juncao
 
-def buscar():
+def preco():
     sigla = siglas()
     if sigla not in combinacao:
-        print("Combinacao invalida")
+        er = tk.Label(root, text='Combinação Invalida')
+        er.grid(row=4, column=1)
+
     else:
         cotacao = requests.get(f'https://economia.awesomeapi.com.br/json/last/{sigla}').json()
-        print(cotacao)
+        er = tk.Label(root, text="")
+        er.grid(row=4, column=1)
+        return cotacao[jsimples]['bid']
+
+def buscar():
+    valor_moeda = float(preco()) * float(valor1.get())
+
+    vf = tk.Label(root, text=f'{valor_moeda:.2f}')
+    vf.grid(row=3, column=0)
+
 
 
 
@@ -54,8 +67,8 @@ texto2 = tk.Label(text="Equivalem a: ")
 texto2.grid(column=0, row=2)
 
 #valor2 vai ser o resultado entre a moeda1  e a moeda2
-valor2 = tk.Entry()
-valor2.grid(column=0, row=3)
+#valor2 = tk.Entry()
+#valor2.grid(column=0, row=3)
 
 #moeda1.set(moeda1.bind("<<ComboboxSelected>>"))
 
